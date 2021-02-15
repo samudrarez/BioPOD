@@ -1,0 +1,150 @@
+<html>
+
+<head>
+
+<title>- PREPARATION -</title>
+	<style>
+	.btn_red{background-color: red;}
+	.btn_yel{background-color: yellow;}
+	.btn_grn{background-color: lime;}
+	.btn_cyan{background-color: cyan;}
+	</style>
+</head>
+
+<body>
+<font color="lime" size="5" face="TechnicLite"> PREPARATION </font><br>
+<button id="popup" class="btn_cyan" onClick='javascript: buka_popup();'>LIHAT DATA PESANAN DISINI</button>
+<hr>
+
+<form action="/action_page.php">
+<input id="inv" placeholder="Masukan No.Order Disini" required></input>
+<input type="submit" id="dtlbtn" value="DETAIL PESANAN">
+<br><br>
+</form>
+
+<div id="Isi"  style="display:none;">
+<table>
+<tr>
+<td><b>Jenis Proses</b></td>
+<td><b>Projek</b></td>
+<td><b>No. Batch</b></td>
+</tr>
+<tr>
+    <td><input id="jnsbox" readonly="true"></input></td>
+    <td><input id="probox" readonly="true"></input></td>
+    <td><input id="btcbox" readonly="true"></input></td>
+</tr>
+</table>
+<br>
+<b>Tanggal Proses</b>  <br><input id="tglbox" readonly="true"></input><br><br>
+<b>Nama Pemesan</b>    <br><input id="namebox" type="text" readonly="true"></input><br><br>
+<b>Pesanan </b>        <br><textarea cols="40" rows="10" id="ordbox" readonly="true"></textarea> <br><br>
+<img id="myimg"><br><br>
+
+<table>
+<tr><b>Status </b> </tr>
+<tr>
+    <td><input id="stsbox" type="text" readonly="true"></td>
+    <td><button id="prssbtn" class="btn_yel" value="Pesanan Sedang Diproses">PESANAN DIPROSES</button></td>
+    <td><button id="slsbtn" class="btn_grn" value="Pesanan Selesai">PESANAN SELESAI</button></td>
+</tr>
+</table>
+<br>
+<form action="/action_page.php">
+<input id="ntebox" type="text" placeholder="Isi Catatan Penolakan" required>
+<button id="tlkbtn" class="btn_red" value="Pesanan Ditolak">TOLAK PESANAN</button>
+</form>
+
+</div>
+<hr>
+&copy;Rezky Samudra Menthana
+
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+<script>
+   var firebaseConfig = {
+    apiKey: "AIzaSyDo1nF4abKQ3AlWMK-HaA4qNL4elGw2ESA",
+    authDomain: "orderfirebasejs.firebaseapp.com",
+    databaseURL: "https://orderfirebasejs-default-rtdb.firebaseio.com",
+    projectId: "orderfirebasejs",
+    storageBucket: "orderfirebasejs.appspot.com",
+    messagingSenderId: "350540365610",
+    appId: "1:350540365610:web:b6cf767714c9d71fb42853"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+//--------------------------------------Ready Data-------------------------------------------------//
+var tlkV, prssV, slsV, invV, nteV;
+  function Ready(){
+    tlkV = document.getElementById('tlkbtn').value;
+    prssV = document.getElementById('prssbtn').value;
+    slsV = document.getElementById('slsbtn').value;
+    invV = document.getElementById('inv').value;
+    nteV = document.getElementById('ntebox').value;
+  }
+  
+//--------------------------------------Selection Proses------------------------------------------//  
+document.getElementById('dtlbtn').onclick = function(){  
+if (document.getElementById('inv').value != ""){  
+  Ready();
+  document.getElementById('Isi').style.display = "block";
+  firebase.database().ref(invV).on('value',function(snapshot){
+  document.getElementById('namebox').value= snapshot.val().Nama;
+  document.getElementById('btcbox').value= snapshot.val().Batch;
+  document.getElementById('ordbox').value= snapshot.val().Pesanan;
+  document.getElementById('stsbox').value= snapshot.val().Status;
+  document.getElementById('jnsbox').value= snapshot.val().Jenis_Proses;
+  document.getElementById('probox').value= snapshot.val().Projek;
+  document.getElementById('tglbox').value= snapshot.val().Tanggal_Proses;
+  });
+  ImgName = document.getElementById('inv').value;
+  firebase.database().ref(invV).on('value', function(snapshot){
+  document.getElementById('myimg').src = snapshot.val().Link;
+  });
+}
+else { 
+alert("HARAP ISI DATA");
+document.getElementById('Isi').style.display = "none";   
+  };  
+}
+  
+  
+//--------------------------------------Update Proses----------------------------------------------//
+document.getElementById('tlkbtn').onclick = function(){  
+if (document.getElementById('ntebox').value != ""){   
+  Ready();
+  firebase.database().ref(invV).update({
+  Status: tlkV,
+  Catatan: nteV,
+  });
+  }
+else { 
+alert("HARAP ISI CATATAN");   
+  };   
+}  
+  
+document.getElementById('prssbtn').onclick = function(){  
+  Ready();
+  firebase.database().ref(invV).update({
+  Status: prssV,
+  Catatan: "-" ,
+  });
+  }          
+  
+document.getElementById('slsbtn').onclick = function(){  
+  Ready();
+  firebase.database().ref(invV).update({
+  Status: slsV,
+  Catatan: "-" ,
+  });
+  } 
+
+function buka_popup(){
+ window.open('DatabasePrepDesk.htm');
+}   
+</script>
+</body>
+
+</html>
