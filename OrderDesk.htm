@@ -4,15 +4,14 @@
 
 <title>- ORDER -</title>
 <style>
-	.btn_cyan{background-color: cyan;}
+	.ylw{color: #ffdd71ff;}
 	.btn_grn{background-color: lime;}
 	img{height:200px; width:200px;  border: 1px solid black;}
 </style>
 </head>
 
 <body>
-<font color="lime" size="5" face="TechnicLite"> ORDER </font>
-<button id="popup" class="btn_cyan" onClick='javascript: buka_popup();'>LIHAT DATA PESANAN DISINI</button>
+<font class="ylw" size="5"> ORDER </font>
 <hr>
 
 <b>Nama Pemesan</b>    <br><input id="namebox" type="text" required></input><br><br>
@@ -26,24 +25,27 @@
 <tr>
 <td><select id="probox" required onchange="optpro()">
     <option selected></option>
-    <option value="ROTA">ROTA</option>
-    <option value="nOPV2">nOPV2</option>
+    <option id="ROTA" value="ROTA">ROTA</option>
+    <option id="nOPV2" value="nOPV2">nOPV2</option>
+    <option id="nOPV1" value="nOPV1">nOPV1</option>
+    <option id="nOPV3" value="nOPV3">nOPV3</option>
+    <option id="mOPV" value="mOPV">mOPV</option>
     <option id="proopt">Lainnya</option>  
     </select></td>
 <td><select id="jnsbox" required onchange="optjns()">
-    <option selected></option>
-    <option value="Resusitasi">Resusitasi</option>
-    <option value="Pasase 1">Pasase 1</option>
-    <option value="Pasase 2">Pasase 2</option>
-    <option value="Pasase 3">Pasase 3</option>
-    <option value="Pasase 4">Pasase 4</option>
-    <option value="Pasase 5">Pasase 5</option>
-    <option value="Inokulasi">Inokulasi</option>
-    <option value="Filtrasi Harvest">Filtrasi & Harvest</option>
-    <option value="Formulasi Filling">Formulasi Filling</option>
-    <option value="Media Fill">Media Fill</option>
-    <option value="Pembuatan Media">Pembuatan Media</option>
-    <option value="Placebo">Placebo</option>
+   <option selected></option>
+    <option value="Resusitasi" id="Resusitasi">Resusitasi</option>
+    <option value="Pasase 1" id="Pasase 1">Pasase 1</option>
+    <option value="Pasase 2" id="Pasase 2">Pasase 2</option>
+    <option value="Pasase 3" id="Pasase 3">Pasase 3</option>
+    <option value="Pasase 4" id="Pasase 4">Pasase 4</option>
+    <option value="Pasase 5" id="Pasase 5">Pasase 5</option>
+    <option value="Inokulasi" id="Inokulasi">Inokulasi</option>
+    <option value="Filtrasi Harvest" id="Filtrasi Harvest">Filtrasi & Harvest</option>
+    <option value="Formulasi Filling" id="Formulasi Filling">Formulasi Filling</option>
+    <option value="Media Fill" id="Media Fill">Media Fill</option>
+    <option value="Pembuatan Media" id="Pembuatan Media">Pembuatan Media</option>
+    <option value="Placebo" id="Placebo">Placebo</option>
     <option id="jnsopt">Lainnya</option>
     </select></td>
 <td><input id="btcbox" type="text" required></input></td>
@@ -85,7 +87,26 @@
 
   //--------------------------------------Ready Data-------------------------------------------------//
 function optpro() {if (document.getElementById("proopt").selected) {runPopup1();}}
-function optjns() {if (document.getElementById("jnsopt").selected) {runPopup();} }
+function optjns() {if (document.getElementById("jnsopt").selected) {runPopup();} 
+if (document.getElementById("jnsopt").selected) {runPopup();} 
+if (document.getElementById("nOPV1").selected && document.getElementById("Resusitasi").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 4set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 1bks\nTowel - 2bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 1").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 4set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 1bks\nTowel - 3bks\nBotol Duran 250mL - 2pcs\nVent Filter CF isi 4 - 2bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 2").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 4set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 2bks\nTowel - 3bks\nBotol Duran 250mL - 2pcs\nVent Filter CF isi 4 - 2bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 3").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 6set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 2bks\nTowel - 3bks\nVent Filter CF isi 4 - 2bks\nBotol Duran 250mL - 2pcs\nBotol Duran 2L - 1pcs\nBotol Duran 5L - 1pcs\nRangkaian Distribusi 5L - 2pcs";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 4").selected)
+        {document.getElementById('ordbox').value = "Gowning Kelas C - 6set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 3bks\nTowel - 4bks\nVent Filter CF isi 4 - 4bks\nBotol Duran 10L - 2pcs\nBotol Duran 2L - 2pcs\nBotol Duran 500mL - 2pcs\nTako 4 - 3pcs\nTako 4 Multitray - 2pcs\nHypel DME  1L - 1pcs\nHypel FBS 500mL - 1pcs\nHypel Medium 10L(in/out) - 1pcs\nHypel waste 10L - 1pcs\nHypel PBS 1L - 1pcs\nHypel Trypsin 500mL - 1pcs\nHypel Pooling Sel 500mL (in/out) - 1pcs\nGunting klem isi 5 - 4bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 5").selected)
+        {document.getElementById('ordbox').value = "Gowning Kelas C - 6set\nBeaker Glass 2L - 3pcs\nTututp Botol isi 4 - 3bks\nTowel - 5bks\nVent Filter CF isi 4 - 6bks\nBotol Duran 10L - 6pcs\nBotol Duran 5 - 2pcs\nBotol Duran 1L - 2pcs\nTako 4 - 4pcs\nTako 4 Multitray - 6pcs\nTako 4 Bag - 2pcs\nHypel Medium 10L (in/out) - 4pcs\nHypel Waste 10L - 1pcs\nHypel FBS 500mL - 1pcs\nHypel PBS 5L - 1pcs\nHypel Trypsin 500mL - 1pcs\nHypel Pooling Sel (in/out 5cb) - 1pcs\nMagnetic Bar - 4pcs\nGunting Klem isi 5 - 4bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Inokulasi").selected)
+        {document.getElementById('ordbox').value = "Gowning Kelas C - 6set\nBeaker Glass 2L - 3pcs\nTutup Botol isi 4 - 3bks\nTowel - 5bks\nVent Filter CF isi 4 - 6bks\nMagnetic Bar - 2pcs\nGunting Klem isi 5 - 4bks\nBotol Nalgene 50L Waste - 1pcs\nBotol Inokulum 1L - 2pcs\nTako 4 CF - 2pcs\nTako 4 CF + bag - 3pcs\nHypel Waste 50L - 1pcs\nHypel Inokulum (4 cbng) - 1pcs";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Filtrasi Harvest").selected)
+        {document.getElementById('ordbox').value = "- HARVEST -\nGowning Kelas C - 3set\nVent Filter CF isi 4 - 3bks\nTako 4 Multitray - 3pcs\nHypel Botol 50L (in/out) - 1pcs\nGunting Klem isi 5 - 2pcs\nTowel - 5bks\n\n- KLARIFIKASI -\nGowning Kelas B - 6set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 3bks\nTowel - 4bks\nGunting Klem isi 5 - 4bks\nBotol Duran 2L - 2pcs\nBotol Nalgene 50L - 1pcs\nHousing + Filter 2,5 mikron - 1pcs\nHousing + Filter 0,45 mikron - 1pcs\nHypel Botol 50L (in/out)+sampel - 1pcs\nHypel Botol Duran 2L - 2pcs\nTako 4 - 2pcs\n\n- FILTRASI STERIL -\nGowning Kelas B - 4set\nBeaker Glass 2L - 2pcs\nTowel - 4bks\nGunting Klem isi 5 - 4bks\nBotol Duran 2L - 2pcs\nBotol Nalgene 2L + tutup - 20pcs\nBotol Nalgene 1L + tutup - 5pcs\nHousing + Filter 0,22 mikron - 1pcs\nHypel Botol Duran 2L - 2pcs\nTako 4 - 2pcs\nTako 4 + Bell Cup  - 1pcs";}
+
+}
 
 function runPopup1(){
     var respond = prompt("Projek Lainnya: ");
@@ -177,7 +198,7 @@ function maketextnumber(n) {
         randomtextnumber = t.join("")
     }
 }
-document.getElementById("inv").value = "ORD" + (50-arrbulan[bulan]) + "" + (100-tanggal) + "" + (75-jam) + (maketextnumber(4), randomtextnumber);
+document.getElementById("inv").value = "ORD" + (50-arrbulan[bulan]) + "" + (100-tanggal) + "" + (75-jam) + "" + (80-menit) + (maketextnumber(4), randomtextnumber);
 
 
 
@@ -229,11 +250,6 @@ document.getElementById("inv").value = "ORD" + (50-arrbulan[bulan]) + "" + (100-
                 });
         });
     }
-
- 
-function buka_popup(){
- window.open('DatabaseOrdDesk.htm');
-}
 </script>
 </body>
 
