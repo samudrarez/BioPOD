@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>- DATA -</title>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+</script>
+
+<style type="text/css">
+    table {
+        font-family: verdana, arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #9900FF;
+        border-collapse: collapse;
+    }
+    table th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #003;
+        background-color: #e54594;
+        color: #ffffff;
+    }
+    table tr:nth-child(even) td{
+        background-color: #ffffff;
+    }
+    table td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #003;
+        background-color: #71D0FF;
+    }
+    .btn_cyan{background-color: #4dc4ffff;}
+    .blue{color: #4dc4ffff;}
+</style>
+ 
+</head>
+<body onLoad="JavaScript:timeRefresh(60000);">
+<font class="blue" size="5">DATABASE</font><br>
+<hr>
+<br>
+<b><font size="+2">LIST PESANAN</font></b>
+<button onclick="Load()">Reload Data</button>
+<br><br>
+<table id="tabel-alat">
+<tr>
+<th scope="col">No. Order</th>
+<th scope="col">Tanggal Order</th>
+<th scope="col">Nama Pemesan</th>
+<th scope="col">Proyek</th>
+<th scope="col">Batch</th>
+<th scope="col">Proses</th>
+<th scope="col">Tanggal Proses</th>
+<th scope="col">Status</th>
+<th scope="col">Catatan</th>
+</tr>
+<tbody>
+ 
+</tbody>
+</table>
+<hr>
+&copy;Rezky Samudra Menthana
+
+ 
+<script>
+ 
+// Initialize Firebase
+var firebaseConfig = {
+    apiKey: "AIzaSyDo1nF4abKQ3AlWMK-HaA4qNL4elGw2ESA",
+    authDomain: "orderfirebasejs.firebaseapp.com",
+    databaseURL: "https://orderfirebasejs-default-rtdb.firebaseio.com",
+    projectId: "orderfirebasejs",
+    storageBucket: "orderfirebasejs.appspot.com",
+    messagingSenderId: "350540365610",
+    appId: "1:350540365610:web:b6cf767714c9d71fb42853"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+ 
+// Buat referensi database firebase
+var dbRef = firebase.database();
+var statusAlat = dbRef.ref();
+ 
+// Dapatkan referensi table
+var table = document.getElementById("tabel-alat").getElementsByTagName('tbody')[0];;
+ 
+// Memuat Data
+statusAlat.on("child_added", function(data, prevChildKey) {
+var newstatusAlat = data.val();
+ 
+var row = table.insertRow(table.rows.length);
+ 
+var cell1 = row.insertCell(0);
+var cell2 = row.insertCell(1);
+var cell3 = row.insertCell(2);
+var cell4 = row.insertCell(3);
+var cell5 = row.insertCell(4);
+var cell6 = row.insertCell(5);
+var cell7 = row.insertCell(6);
+var cell8 = row.insertCell(7);
+var cell9 = row.insertCell(8);
+
+cell1.innerHTML = newstatusAlat.Invoice; 
+cell2.innerHTML = newstatusAlat.Tgl_OrdDlv;
+cell3.innerHTML = newstatusAlat.Nama;
+cell4.innerHTML = newstatusAlat.Projek;
+cell5.innerHTML = newstatusAlat.Batch;
+cell6.innerHTML = newstatusAlat.Jenis_Proses;
+cell7.innerHTML = newstatusAlat.Tanggal_Proses;
+cell8.innerHTML = newstatusAlat.Status;
+cell9.innerHTML = newstatusAlat.Catatan; 
+});
+ 
+ 
+function Load() {location.reload();} 
+function timeRefresh(timeoutPeriod)
+{
+ setTimeout("location.reload(true);",timeoutPeriod);
+}
+</script>
+ 
+</body>
+</html>

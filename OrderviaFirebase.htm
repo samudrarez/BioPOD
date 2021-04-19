@@ -1,0 +1,215 @@
+<html>
+
+<head>
+
+<title>- ORDER -</title>
+<style>
+	.btn_cyan{background-color: #4dc4ffff;}
+	.btn_grn{background-color: lime;}
+	.order{color: #ffdd71ff;}
+</style>
+</head>
+
+<body>
+<font class="order" size="5"> ORDER </font>
+<hr>
+
+<b>Nama Pemesan</b>    <br><input id="namebox" type="text" required></input><br><br>
+
+<table>
+<tr>
+<td><b>Proyek</b></td>
+<td><b>Jenis Proses</b></td>
+<td><b>No. Batch</b></td>
+</tr>
+<tr>
+<td><select id="probox" required onchange="optpro()">
+    <option selected></option>
+    <option id="ROTA" value="ROTA">ROTA</option>
+    <option id="nOPV2" value="nOPV2">nOPV2</option>
+    <option id="nOPV1" value="nOPV1">nOPV1</option>
+    <option id="nOPV3" value="nOPV3">nOPV3</option>
+    <option id="mOPV" value="mOPV">mOPV</option>
+    <option id="proopt">Lainnya</option>  
+    </select></td>
+<td><select id="jnsbox" required onchange="optjns()">
+    <option selected></option>
+    <option value="Resusitasi" id="Resusitasi">Resusitasi</option>
+    <option value="Pasase 1" id="Pasase 1">Pasase 1</option>
+    <option value="Pasase 2" id="Pasase 2">Pasase 2</option>
+    <option value="Pasase 3" id="Pasase 3">Pasase 3</option>
+    <option value="Pasase 4" id="Pasase 4">Pasase 4</option>
+    <option value="Pasase 5" id="Pasase 5">Pasase 5</option>
+    <option value="Inokulasi" id="Inokulasi">Inokulasi</option>
+    <option value="Filtrasi Harvest" id="Filtrasi Harvest">Filtrasi & Harvest</option>
+    <option value="Formulasi Filling" id="Formulasi Filling">Formulasi Filling</option>
+    <option value="Media Fill" id="Media Fill">Media Fill</option>
+    <option value="Pembuatan Media" id="Pembuatan Media">Pembuatan Media</option>
+    <option value="Placebo" id="Placebo">Placebo</option>
+    <option id="jnsopt">Lainnya</option>
+    </select></td>
+<td><input id="btcbox" type="text" required></input></td>
+</tr>
+</table>
+<br>
+
+<b>Tanggal Proses</b>  <br><input id="tglbox" type="date" placeholder="dd/mm/yyyy" required></input><br><br>
+<b>Pesanan </b>        <br><textarea cols="40" rows="10" id="ordbox" placeholder="Silahkan isi pesanan Anda" required></textarea> <br><br>
+
+<button id="order" class="btn_grn">ORDER !!!</button>
+
+<hr>
+<button id="popup" class="btn_cyan" onClick='javascript: buka_popup();'>LIHAT DATA PESANAN DISINI</button>
+<hr>
+&copy;Rezky Samudra Menthana
+<label id="tme"></label>
+<label id="inv"></label>
+
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-storage.js"></script>
+<script>
+   var firebaseConfig = {
+    apiKey: "AIzaSyDo1nF4abKQ3AlWMK-HaA4qNL4elGw2ESA",
+    authDomain: "orderfirebasejs.firebaseapp.com",
+    databaseURL: "https://orderfirebasejs-default-rtdb.firebaseio.com",
+    projectId: "orderfirebasejs",
+    storageBucket: "orderfirebasejs.appspot.com",
+    messagingSenderId: "350540365610",
+    appId: "1:350540365610:web:b6cf767714c9d71fb42853"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+
+//--------------------------------------Database Pesanan-------------------------------------------------//
+
+
+
+
+
+//--------------------------------------Ready Data-------------------------------------------------//
+function optpro() {if (document.getElementById("proopt").selected) {runPopup1();}}
+function optjns() {
+if (document.getElementById("jnsopt").selected) {runPopup();} 
+if (document.getElementById("nOPV1").selected && document.getElementById("Resusitasi").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 4set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 1bks\nTowel - 2bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 1").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 4set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 1bks\nTowel - 3bks\nBotol Duran 250mL - 2pcs\nVent Filter CF isi 4 - 2bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 2").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 4set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 2bks\nTowel - 3bks\nBotol Duran 250mL - 2pcs\nVent Filter CF isi 4 - 2bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 3").selected)
+        {document.getElementById('ordbox').value = "Gowning kelas C - 6set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 2bks\nTowel - 3bks\nVent Filter CF isi 4 - 2bks\nBotol Duran 250mL - 2pcs\nBotol Duran 2L - 1pcs\nBotol Duran 5L - 1pcs\nRangkaian Distribusi 5L - 2pcs";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 4").selected)
+        {document.getElementById('ordbox').value = "Gowning Kelas C - 6set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 3bks\nTowel - 4bks\nVent Filter CF isi 4 - 4bks\nBotol Duran 10L - 2pcs\nBotol Duran 2L - 2pcs\nBotol Duran 500mL - 2pcs\nTako 4 - 3pcs\nTako 4 Multitray - 2pcs\nHypel DME  1L - 1pcs\nHypel FBS 500mL - 1pcs\nHypel Medium 10L(in/out) - 1pcs\nHypel waste 10L - 1pcs\nHypel PBS 1L - 1pcs\nHypel Trypsin 500mL - 1pcs\nHypel Pooling Sel 500mL (in/out) - 1pcs\nGunting klem isi 5 - 4bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Pasase 5").selected)
+        {document.getElementById('ordbox').value = "Gowning Kelas C - 6set\nBeaker Glass 2L - 3pcs\nTututp Botol isi 4 - 3bks\nTowel - 5bks\nVent Filter CF isi 4 - 6bks\nBotol Duran 10L - 6pcs\nBotol Duran 5 - 2pcs\nBotol Duran 1L - 2pcs\nTako 4 - 4pcs\nTako 4 Multitray - 6pcs\nTako 4 Bag - 2pcs\nHypel Medium 10L (in/out) - 4pcs\nHypel Waste 10L - 1pcs\nHypel FBS 500mL - 1pcs\nHypel PBS 5L - 1pcs\nHypel Trypsin 500mL - 1pcs\nHypel Pooling Sel (in/out 5cb) - 1pcs\nMagnetic Bar - 4pcs\nGunting Klem isi 5 - 4bks";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Inokulasi").selected)
+        {document.getElementById('ordbox').value = "Gowning Kelas C - 6set\nBeaker Glass 2L - 3pcs\nTutup Botol isi 4 - 3bks\nTowel - 5bks\nVent Filter CF isi 4 - 6bks\nMagnetic Bar - 2pcs\nGunting Klem isi 5 - 4bks\nBotol Nalgene 50L Waste - 1pcs\nBotol Inokulum 1L - 2pcs\nTako 4 CF - 2pcs\nTako 4 CF + bag - 3pcs\nHypel Waste 50L - 1pcs\nHypel Inokulum (4 cbng) - 1pcs";}
+if (document.getElementById("nOPV1").selected && document.getElementById("Filtrasi Harvest").selected)
+        {document.getElementById('ordbox').value = "- HARVEST -\nGowning Kelas C - 3set\nVent Filter CF isi 4 - 3bks\nTako 4 Multitray - 3pcs\nHypel Botol 50L (in/out) - 1pcs\nGunting Klem isi 5 - 2pcs\nTowel - 5bks\n\n- KLARIFIKASI -\nGowning Kelas B - 6set\nBeaker Glass 2L - 2pcs\nTutup Botol isi 4 - 3bks\nTowel - 4bks\nGunting Klem isi 5 - 4bks\nBotol Duran 2L - 2pcs\nBotol Nalgene 50L - 1pcs\nHousing + Filter 2,5 mikron - 1pcs\nHousing + Filter 0,45 mikron - 1pcs\nHypel Botol 50L (in/out)+sampel - 1pcs\nHypel Botol Duran 2L - 2pcs\nTako 4 - 2pcs\n\n- FILTRASI STERIL -\nGowning Kelas B - 4set\nBeaker Glass 2L - 2pcs\nTowel - 4bks\nGunting Klem isi 5 - 4bks\nBotol Duran 2L - 2pcs\nBotol Nalgene 2L + tutup - 20pcs\nBotol Nalgene 1L + tutup - 5pcs\nHousing + Filter 0,22 mikron - 1pcs\nHypel Botol Duran 2L - 2pcs\nTako 4 - 2pcs\nTako 4 + Bell Cup  - 1pcs";}
+
+}
+
+function runPopup1(){
+    var respond = prompt("Projek Lainnya: ");
+    if(respond != "")
+    {
+    select = document.getElementById('probox');
+    var opts = document.getElementById('proopt');
+    opts.value = respond;
+    opts.innerHTML = respond;
+    select.appendChild(opts);
+    }
+    else
+    {
+      window.alert("ISI DATA");
+    }
+    }
+
+function runPopup(){
+    var respond = prompt("Jenis Proses Lainnya: ");
+    if(respond != "")
+    {
+    select = document.getElementById('jnsbox');
+    var opt = document.getElementById('jnsopt');
+    opt.value = respond;
+    opt.innerHTML = respond;
+    select.appendChild(opt);
+    }
+    else
+    {
+      window.alert("ISI DATA");
+    }
+    }
+
+
+var nameV, proV, tglV, jnsV, btcV, ordV, tglOrdV, invV;
+  function Ready(){
+    nameV = document.getElementById('namebox').value;
+    proV = document.getElementById('probox').value;
+    tglV = document.getElementById('tglbox').value;
+    jnsV = document.getElementById('jnsbox').value;
+    btcV = document.getElementById('btcbox').value;
+    ordV = document.getElementById('ordbox').value;
+    tglOrdV = document.getElementById('tme').value;
+    invV = document.getElementById('inv').value;
+  }
+  
+//--------------------------------------Insert Proses----------------------------------------------//
+document.getElementById('order').onclick = function(){  
+  Ready();
+if (nameV !="" && proV!="" && tglV!="" && jnsV!="" && btcV!="" && ordV!=""){
+  alert("Thanks for your order !!!");
+  firebase.database().ref(invV).update({
+  Nama: nameV,
+  Projek: proV,
+  Tanggal_Proses: tglV,
+  Jenis_Proses: jnsV,
+  Batch: btcV,
+  Status: "Pesanan Baru",
+  Pesanan: ordV,
+  Tgl_OrdDlv: tglOrdV,
+  Invoice: invV,
+  Catatan: "-" ,
+  });
+  }
+else { 
+alert("HARAP ISI SEMUA DATA");   
+};
+  }
+
+//--------------------------------------Data Waktu----------------------------------------------//
+arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+date = new Date();
+tanggal = date.getDate();
+bulan = date.getMonth();
+tahun = date.getFullYear();
+jam = date.getHours();
+menit = date.getMinutes();
+document.getElementById("tme").value = tanggal+"-"+arrbulan[bulan]+"-"+tahun+"  "+jam+":"+menit;
+
+
+//--------------------------------------Data Invoice----------------------------------------------//
+function maketextnumber(n) {
+    for (var r = ["A", "B", "C", "D", "E", "F",
+ "G", "H", "I",  "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W",
+ "X", "Y", "Z", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"],
+ e = n, t = new Array, a = 0; a <= e - 1; a++) {
+        t[a] = r[parseInt(Math.random() * r.length)];
+        t = t;
+        randomtextnumber = t.join("")
+    }
+}
+document.getElementById("inv").value = "ORD" + (50-arrbulan[bulan]) + "" + (100-tanggal) + "" + (75-jam) + "" + (80-menit) + (maketextnumber(3), randomtextnumber);
+
+
+ 
+function buka_popup(){
+ window.open('DatabaseOrd.htm');
+}
+</script>
+</body>
+
+</html>

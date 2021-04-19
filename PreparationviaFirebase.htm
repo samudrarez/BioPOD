@@ -1,0 +1,207 @@
+<html>
+
+<head>
+
+<title>- PREPARATION -</title>
+	<style>
+	.table1 {
+        font-family: verdana, arial, sans-serif;
+        font-size: 16px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #9900FF;
+        border-collapse: collapse;
+    }
+    .table1 th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #003;
+        background-color: #e54594;
+        color: #ffffff;
+    }
+    .table1 tr:nth-child(even) td{
+        background-color: #ffffff;
+    }
+    .table1 td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #003;
+        background-color: #71D0FF;
+    }
+	
+	.btn_red{background-color: red;}
+	.btn_yel{background-color: yellow;}
+	.btn_grn{background-color: lime;}
+	.btn_cyan{background-color: #4dc4ffff;}
+	.prep{color: #4ddbc4ff;}
+    </style>
+</head>
+
+<body>
+<font class="prep" size="5"> PREPARATION </font>
+<hr>
+<button id="popup" class="btn_cyan" onClick='javascript: buka_popup();'>LIHAT DATA PESANAN DISINI</button>
+
+
+<div id="tbldat"  style="display:none;">
+<br>
+<button onclick="Load()">Reload Data</button>
+<button id="btnttp" onClick='javascript: tutup_popup();'>Tutup Tabel Data </button>
+<br><br>
+<table id="tabel-data" class="table1">
+<tr>
+<th scope="col">No. Order</th>
+<th scope="col">Tanggal Proses</th>
+<th scope="col">Proses</th>
+<th scope="col">Proyek</th>
+<th scope="col">Batch</th>
+<th scope="col">Status</th>
+<th scope="col">Catatan</th>
+</tr>
+<tbody>
+ 
+</tbody>
+</table>
+</div>
+
+<br><br>
+<input id="inv" placeholder="Masukan No.Order Disini" required></input>
+<input type="submit" id="dtlbtn" value="DETAIL PESANAN">
+
+<div id="Isi"  style="display:none;">
+<br>
+<table>
+<tr>
+<td><b>Jenis Proses</b></td>
+<td><b>Proyek</b></td>
+<td><b>No. Batch</b></td>
+</tr>
+<tr>
+    <td><input id="jnsbox" readonly="true"></input></td>
+    <td><input id="probox" readonly="true"></input></td>
+    <td><input id="btcbox" readonly="true"></input></td>
+</tr>
+</table>
+<br>
+<b>Tanggal Proses</b>  <br><input id="tglbox" readonly="true"></input><br><br>
+<b>Nama Pemesan</b>    <br><input id="namebox" type="text" readonly="true"></input><br><br>
+<b>Pesanan </b>        <br><textarea cols="40" rows="10" id="ordbox"></textarea> <br><br>
+<img id="myimg"><br><br>
+
+<button id="slsbtn" class="btn_grn" value="Pesanan Sedang Proses Sterilisasi">PESANAN DISTERILISASI</button>
+</div>
+
+<hr>
+&copy;Rezky Samudra Menthana
+
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+<script>
+   var firebaseConfig = {
+    apiKey: "AIzaSyDo1nF4abKQ3AlWMK-HaA4qNL4elGw2ESA",
+    authDomain: "orderfirebasejs.firebaseapp.com",
+    databaseURL: "https://orderfirebasejs-default-rtdb.firebaseio.com",
+    projectId: "orderfirebasejs",
+    storageBucket: "orderfirebasejs.appspot.com",
+    messagingSenderId: "350540365610",
+    appId: "1:350540365610:web:b6cf767714c9d71fb42853"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+  
+//--------------------------------------Ready Data-------------------------------------------------//
+var slsV, invV;
+  function Ready(){
+    slsV = document.getElementById('slsbtn').value;
+    invV = document.getElementById('inv').value;
+  }
+  
+//--------------------------------------Selection Proses------------------------------------------//  
+document.getElementById('dtlbtn').onclick = function(){  
+if (document.getElementById('inv').value != ""){  
+  Ready();
+  document.getElementById('Isi').style.display = "block";
+  firebase.database().ref(invV).on('value',function(snapshot){
+  document.getElementById('namebox').value= snapshot.val().Nama;
+  document.getElementById('btcbox').value= snapshot.val().Batch;
+  document.getElementById('ordbox').value= snapshot.val().Pesanan;
+  document.getElementById('jnsbox').value= snapshot.val().Jenis_Proses;
+  document.getElementById('probox').value= snapshot.val().Projek;
+  document.getElementById('tglbox').value= snapshot.val().Tanggal_Proses;
+  });
+  ImgName = document.getElementById('inv').value;
+  firebase.database().ref(invV).on('value', function(snapshot){
+  document.getElementById('myimg').src = snapshot.val().Link;
+  });
+}
+else { 
+alert("HARAP ISI DATA");
+document.getElementById('Isi').style.display = "none";   
+  };  
+}
+  
+  
+//--------------------------------------Update Proses----------------------------------------------//
+  
+document.getElementById('slsbtn').onclick = function(){  
+  Ready();
+  firebase.database().ref(invV).update({
+  Status: slsV +" pada "+tanggal+"-"+arrbulan[bulan]+"-"+tahun+"  "+jam+":"+menit,
+  });
+  alert("PESANAN DISTERILISASI");
+  } 
+
+//--------------------------------------Table----------------------------------------------//
+function buka_popup(){document.getElementById('tbldat').style.display = "block";}
+function Load() {location.reload();}   
+function tutup_popup(){document.getElementById('tbldat').style.display = "none";}   
+
+// Buat referensi database firebase
+var dbRef = firebase.database();
+var statusAlat = dbRef.ref();
+ 
+// Dapatkan referensi table
+var table = document.getElementById("tabel-data").getElementsByTagName('tbody')[0];;
+ 
+// Memuat Data
+statusAlat.on("child_added", function(data, prevChildKey) {
+var newstatusAlat = data.val();
+ 
+var row = table.insertRow(table.rows.length);
+ 
+var cell1 = row.insertCell(0);
+var cell2 = row.insertCell(1);
+var cell3 = row.insertCell(2);
+var cell4 = row.insertCell(3);
+var cell5 = row.insertCell(4);
+var cell6 = row.insertCell(5);
+var cell7 = row.insertCell(6);
+
+cell1.innerHTML = newstatusAlat.Invoice; 
+cell2.innerHTML = newstatusAlat.Tanggal_Proses;
+cell3.innerHTML = newstatusAlat.Jenis_Proses;
+cell4.innerHTML = newstatusAlat.Projek;
+cell5.innerHTML = newstatusAlat.Batch;
+cell6.innerHTML = newstatusAlat.Status;
+cell7.innerHTML = newstatusAlat.Catatan; 
+});
+
+
+//--------------------------------------Data Waktu----------------------------------------------//
+arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+date = new Date();
+tanggal = date.getDate();
+bulan = date.getMonth();
+tahun = date.getFullYear();
+jam = date.getHours();
+menit = date.getMinutes();
+document.getElementById("tme").value = tanggal+"-"+arrbulan[bulan]+"-"+tahun+"  "+jam+":"+menit;
+
+
+</script>
+</body>
+
+</html>

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>- DATA -</title>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.3/firebase-database.js"></script>
+</script>
+
+<style type="text/css">
+    .table1 {
+        font-family: verdana, arial, sans-serif;
+        font-size: 14px;
+        color: #333333;
+        border-width: 1px;
+        border-color: #9900FF;
+        border-collapse: collapse;
+    }
+    .table1 th {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #003;
+        background-color: #e54594;
+        color: #ffffff;
+    }
+    .table1 tr:nth-child(even) td{
+        background-color: #ffffff;
+    }
+    .table1 td {
+        border-width: 1px;
+        padding: 8px;
+        border-style: solid;
+        border-color: #003;
+        background-color: #71D0FF;
+    }
+    .btn_cyan{background-color: #4dc4ffff;}
+    .btn_ylw{background-color: #ffdd71ff;}
+    .order{color: #ffdd71ff;}
+</style>
+ 
+</head>
+<body>
+<font class="order" size="5">DATABASE</font><br>
+<button id="back" class="btn_cyan" onClick='javascript: backOrd();'>Back to Order Menu</button>
+<hr>
+<br>
+<b><font size="+2">LIST PESANAN</font></b>
+<button onclick="Load()">Reload Data</button>
+<br><br>
+<table id="tabel-alat" class="table1">
+<tr>
+<th scope="col">No. Order</th>
+<th scope="col">Tanggal Order</th>
+<th scope="col">Nama Pemesan</th>
+<th scope="col">Proyek</th>
+<th scope="col">Batch</th>
+<th scope="col">Proses</th>
+<th scope="col">Tanggal Proses</th>
+<th scope="col">Status</th>
+<th scope="col">Catatan</th>
+</tr>
+<tbody>
+ 
+</tbody>
+</table>
+
+<hr>
+<table>
+<tr>
+<td><input id="inv" placeholder="Masukan No.Order Disini" required></input></td>
+<td><button id="dtlbtn">CEK BARANG PESANAN</button></td>
+<td><button id="ubhbtn" class="btn_ylw" value="Permintaan Perubahan Data Pesanan Ini">Permintaan Perubahan Data Pesanan Ini</button></td>
+<td><input id="nmaubh" placeholder="Nama yang Mengajukan Perubahan Data" required></input></td>
+</tr>
+</table>
+
+<div id="Isi"  style="display:none;">
+<textarea cols="40" rows="10" id="ordbox" readonly="true"></textarea><br>
+<img id="myimg">
+</div>
+<hr>
+&copy;Rezky Samudra Menthana
+
+ 
+<script>
+ 
+// Initialize Firebase
+var firebaseConfig = {
+    apiKey: "AIzaSyDo1nF4abKQ3AlWMK-HaA4qNL4elGw2ESA",
+    authDomain: "orderfirebasejs.firebaseapp.com",
+    databaseURL: "https://orderfirebasejs-default-rtdb.firebaseio.com",
+    projectId: "orderfirebasejs",
+    storageBucket: "orderfirebasejs.appspot.com",
+    messagingSenderId: "350540365610",
+    appId: "1:350540365610:web:b6cf767714c9d71fb42853"
+  };
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+ 
+// Buat referensi database firebase
+var dbRef = firebase.database();
+var statusAlat = dbRef.ref();
+ 
+// Dapatkan referensi table
+var table = document.getElementById("tabel-alat").getElementsByTagName('tbody')[0];;
+ 
+// Memuat Data
+statusAlat.on("child_added", function(data, prevChildKey) {
+var newstatusAlat = data.val();
+ 
+var row = table.insertRow(table.rows.length);
+ 
+var cell1 = row.insertCell(0);
+var cell2 = row.insertCell(1);
+var cell3 = row.insertCell(2);
+var cell4 = row.insertCell(3);
+var cell5 = row.insertCell(4);
+var cell6 = row.insertCell(5);
+var cell7 = row.insertCell(6);
+var cell8 = row.insertCell(7);
+var cell9 = row.insertCell(8);
+
+cell1.innerHTML = newstatusAlat.Invoice; 
+cell2.innerHTML = newstatusAlat.Tgl_OrdDlv;
+cell3.innerHTML = newstatusAlat.Nama;
+cell4.innerHTML = newstatusAlat.Projek;
+cell5.innerHTML = newstatusAlat.Batch;
+cell6.innerHTML = newstatusAlat.Jenis_Proses;
+cell7.innerHTML = newstatusAlat.Tanggal_Proses;
+cell8.innerHTML = newstatusAlat.Status;
+cell9.innerHTML = newstatusAlat.Catatan; 
+});
+ 
+ 
+//--------------------------------------------------Cek Pesanan-------------------------------------------------//
+var invV, nmaubhV, ubhbtnV;
+  function Ready(){
+    invV = document.getElementById('inv').value;
+    nmaubhV = document.getElementById('nmaubh').value;
+    ubhbtnV = document.getElementById('ubhbtn').value;
+  }
+
+document.getElementById('dtlbtn').onclick = function(){  
+  Ready();
+if (invV != ""){
+  document.getElementById('Isi').style.display = "block";
+  firebase.database().ref(invV).on('value',function(snapshot){
+  document.getElementById('ordbox').value= snapshot.val().Pesanan;
+  });
+  ImgName = document.getElementById('inv').value;
+  firebase.database().ref(invV).on('value', function(snapshot){
+  document.getElementById('myimg').src = snapshot.val().Link;
+  });
+  }
+else { 
+alert("HARAP ISI DATA");
+document.getElementById('Isi').style.display = "none";   
+  };  
+}
+
+
+document.getElementById('ubhbtn').onclick = function(){  
+  Ready();
+if (invV != "" && nmaubhV != ""){
+  firebase.database().ref(invV).update({
+  Catatan: ubhbtnV + " a.n. " + nmaubhV + " pada " + tanggal+"-"+arrbulan[bulan]+"-"+tahun+"  "+jam+":"+menit,
+  });
+  alert("PERMINTAAN TELAH DIAJUKAN");
+  }
+else { 
+alert("HARAP ISI DATA");  
+  };  
+}
+
+//--------------------------------------Data Waktu----------------------------------------------//
+arrbulan = ["01","02","03","04","05","06","07","08","09","10","11","12"];
+date = new Date();
+tanggal = date.getDate();
+bulan = date.getMonth();
+tahun = date.getFullYear();
+jam = date.getHours();
+menit = date.getMinutes();
+document.getElementById("tme").value = tanggal+"-"+arrbulan[bulan]+"-"+tahun+"  "+jam+":"+menit;
+ 
+
+ 
+function Load() {location.reload();} 
+function backOrd(){window.open('OrderviaFirebase.htm');}
+</script>
+ 
+</body>
+</html>
